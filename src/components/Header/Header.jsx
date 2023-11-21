@@ -2,6 +2,10 @@ import { MdLocationOn } from "react-icons/md";
 import { HiCalendar, HiMinus, HiPlus, HiSearch } from "react-icons/hi";
 import { useRef, useState } from "react";
 import useOutsideClick from "../../hooks/useOutsideClick";
+import "react-date-range/dist/styles.css"; // main style file
+import "react-date-range/dist/theme/default.css"; // theme css file
+import { DateRange } from "react-date-range";
+import { format } from "date-fns";
 const Header = () => {
   const [destination, setDestination] = useState("");
   const [openOption, setOpenOption] = useState(false);
@@ -10,6 +14,16 @@ const Header = () => {
     children: 0,
     room: 3,
   });
+  const [openDate, setOpenDate] = useState(false);
+  const [date, setDate] = useState([
+    {
+      startDate: new Date(),
+      endDate: new Date(),
+      key: "selection",
+    },
+  ]);
+  const dateOpenRef = useRef();
+  useOutsideClick(dateOpenRef, "date", () => setOpenDate(false));
   const handleOptions = (name, operation) => {
     setOptions((preve) => {
       return {
@@ -37,14 +51,29 @@ const Header = () => {
         </div>
         <div className="headerSearchItem">
           <HiCalendar className="headerIcon dateIcon" />
-          <div className="dateDropDown">2023/06/15</div>
+          <div
+            id="date"
+            className="dateDropDown"
+            onClick={() => setOpenDate(!openDate)}
+          >
+            {`${format(date[0].startDate, "MM/dd/yyyy")} to ${format(
+              date[0].endDate,
+              "MM/dd/yyyy"
+            )}`}
+          </div>
+          {openDate && (
+            <div ref={dateOpenRef}>
+              <DateRange
+                ranges={date}
+                onChange={(item) => setDate([item.selection])}
+                className="date"
+              />
+            </div>
+          )}
           <span className="seperator"></span>
         </div>
         <div className="headerSearchItem">
-          <div
-            onClick={() => setOpenOption(!openOption)}
-            className="optionDropDown"
-          >
+          <div onClick={() => setOpenOption(!openOption)} id="optionDropDown">
             1 adult &bull; 2 children &bull; 1 room
           </div>
           {openOption && (
