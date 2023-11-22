@@ -6,13 +6,21 @@ import "react-date-range/dist/styles.css"; // main style file
 import "react-date-range/dist/theme/default.css"; // theme css file
 import { DateRange } from "react-date-range";
 import { format } from "date-fns";
+import {
+  createSearchParams,
+  useNavigate,
+  useSearchParams,
+} from "react-router-dom";
 const Header = () => {
-  const [destination, setDestination] = useState("");
+  const [searchParams, setSearchParams] = useSearchParams();
+  const [destination, setDestination] = useState(
+    searchParams.get("destination") || ""
+  );
   const [openOption, setOpenOption] = useState(false);
   const [options, setOptions] = useState({
-    adult: 5,
+    adult: 1,
     children: 0,
-    room: 3,
+    room: 1,
   });
   const [openDate, setOpenDate] = useState(false);
   const [date, setDate] = useState([
@@ -23,6 +31,7 @@ const Header = () => {
     },
   ]);
   const dateOpenRef = useRef();
+  const navigate = useNavigate();
   useOutsideClick(dateOpenRef, "date", () => setOpenDate(false));
   const handleOptions = (name, operation) => {
     setOptions((preve) => {
@@ -32,6 +41,16 @@ const Header = () => {
           operation === "decrement" ? options[name] - 1 : options[name] + 1,
       };
     });
+  };
+  const handleSearch = () => {
+    setSearchParams({ date, options, destination });
+    const encodeParams = createSearchParams({
+      date: JSON.stringify(date),
+      options: JSON.stringify(options),
+      destination: destination,
+    });
+    // setSearchParams(encodeParams);
+    navigate({ pathname: "hotel", search: encodeParams.toString() });
   };
   return (
     <div className="header">
@@ -74,7 +93,8 @@ const Header = () => {
         </div>
         <div className="headerSearchItem">
           <div onClick={() => setOpenOption(!openOption)} id="optionDropDown">
-            1 adult &bull; 2 children &bull; 1 room
+            {options.adult} adult &bull; {options.children} children &bull;{" "}
+            {options.room} room
           </div>
           {openOption && (
             <GuestOptionList
@@ -86,7 +106,7 @@ const Header = () => {
           <span className="seperator"></span>
         </div>
         <div className="headerSearchItem">
-          <button className="headerSearchBtn">
+          <button className="headerSearchBtn" onClick={handleSearch}>
             <HiSearch className="headerIcon" />
           </button>
         </div>
