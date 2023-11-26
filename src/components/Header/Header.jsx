@@ -50,7 +50,7 @@ const Header = () => {
       destination: destination,
     });
     // setSearchParams(encodeParams);
-    navigate({ pathname: "hotel", search: encodeParams.toString() });
+    navigate({ pathname: "hotels", search: encodeParams.toString() });
   };
   return (
     <div className="header">

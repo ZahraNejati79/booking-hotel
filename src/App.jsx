@@ -12,7 +12,7 @@ function App() {
       <Header />
       <Routes>
         <Route path="/" element={<LocationList />} />
-        <Route path="/hotel" element={<AppLayout />}>
+        <Route path="/hotels" element={<AppLayout />}>
           <Route index element={<Hotels />} />
           <Route path=":id" element={<div>selected hotel</div>} />
         </Route>
