@@ -6,14 +6,15 @@ import { useEffect } from "react";
 
 const SingleBookmark = () => {
   const { id } = useParams();
-  const { isLoadingBookmark, currentBookmark, getCurrentBookmark } =
+  const { isLoadingCurrentBookmark, currentBookmark, getCurrentBookmark } =
     useBookmarks();
 
   useEffect(() => {
     getCurrentBookmark(id);
+    console.log("id:", id);
   }, [id]);
 
-  if (isLoadingBookmark) return <Loader />;
+  if (isLoadingCurrentBookmark || !currentBookmark) return <Loader />;
   return (
     <div className="roomDetail">
       <h2>{currentBookmark.cityName}</h2>

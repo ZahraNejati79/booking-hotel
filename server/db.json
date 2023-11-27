@@ -1368,6 +1368,114 @@
       "longitude": "67.78003711374224",
       "host_location": "Baba Kot Pakistan",
       "id": 8
+    },
+    {
+      "cityName": "Vert-le-Grand",
+      "country": "France",
+      "countryCode": "FR",
+      "latitude": "48.58113120784749",
+      "longitude": "2.337774362060397",
+      "host_location": "Vert-le-Grand France",
+      "id": 9
+    },
+    {
+      "cityName": "Vert-le-Grand",
+      "country": "France",
+      "countryCode": "FR",
+      "latitude": "48.58113120784749",
+      "longitude": "2.337774362060397",
+      "host_location": "Vert-le-Grand France",
+      "id": 10
+    },
+    {
+      "cityName": "Vert-le-Grand",
+      "country": "France",
+      "countryCode": "FR",
+      "latitude": "48.58113120784749",
+      "longitude": "2.337774362060397",
+      "host_location": "Vert-le-Grand France",
+      "id": 11
+    },
+    {
+      "cityName": "Bretigny-sur-Orge",
+      "country": "France",
+      "countryCode": "FR",
+      "latitude": "48.59271672409753",
+      "longitude": "2.3285078059287705",
+      "host_location": "Bretigny-sur-Orge France",
+      "id": 12
+    },
+    {
+      "cityName": "Chassignolles",
+      "country": "France",
+      "countryCode": "FR",
+      "latitude": "46.496830563951676",
+      "longitude": "1.9655507626131998",
+      "host_location": "Chassignolles France",
+      "id": 13
+    },
+    {
+      "cityName": "Tubize",
+      "country": "Belgium",
+      "countryCode": "BE",
+      "latitude": "50.689530176379954",
+      "longitude": "4.2088639950691995",
+      "host_location": "Tubize Belgium",
+      "id": 14
+    },
+    {
+      "cityName": "Tubize",
+      "country": "Belgium",
+      "countryCode": "BE",
+      "latitude": "50.689530176379954",
+      "longitude": "4.2088639950691995",
+      "host_location": "Tubize Belgium",
+      "id": 15
+    },
+    {
+      "cityName": "Vert-le-Grand",
+      "country": "France",
+      "countryCode": "FR",
+      "latitude": "48.595440620174514",
+      "longitude": "2.343981487252753",
+      "host_location": "Vert-le-Grand France",
+      "id": 16
+    },
+    {
+      "cityName": "Tuyserkan",
+      "country": "Iran (Islamic Republic of)",
+      "countryCode": "IR",
+      "latitude": "34.43740141998825",
+      "longitude": "48.52978171539816",
+      "host_location": "Tuyserkan Iran (Islamic Republic of)",
+      "id": 17
+    },
+    {
+      "cityName": "Kortemark",
+      "country": "Belgium",
+      "countryCode": "BE",
+      "latitude": "51.02485769804779",
+      "longitude": "3.004878476585811",
+      "host_location": "Kortemark Belgium",
+      "id": 18
+    },
+    {
+      "cityName": "Erpe-Mere",
+      "country": "Belgium",
+      "countryCode": "BE",
+      "latitude": "50.9272463101775",
+      "longitude": "3.9575314199544254",
+      "host_location": "Erpe-Mere Belgium",
+      "id": 19
+    },
+    {
+      "cityName": "Sowdari District",
+      "country": "Sudan (the)",
+      "countryCode": "SD",
+      "latitude": "14.347556835082916",
+      "longitude": "29.692058987731297",
+      "host_location": "Sowdari District Sudan (the)",
+      "id": 20
     }
   ]
 }

@@ -7,20 +7,14 @@ import {
   useMap,
   useMapEvent,
 } from "react-leaflet";
-import { useNavigate, useSearchParams } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import useGeoLocation from "../../hooks/useGeoLocation";
+import useUrlLocation from "../../hooks/useUrlLocation";
 
 const Map = ({ markerLocations }) => {
-  const [searchParams, setSearchParams] = useSearchParams();
   const [mapCenter, setMapCenter] = useState([51, 3]);
-  const {
-    getGeoLocation,
-    isLoading: IsLoadingGeoLoacation,
-    position: geoPosition,
-  } = useGeoLocation();
-
-  const lat = searchParams.get("lat");
-  const lng = searchParams.get("lng");
+  const [lat, lng] = useUrlLocation();
+  const { getGeoLocation, isLoading, position: geoPosition } = useGeoLocation();
 
   useEffect(() => {
     if (lat && lng) setMapCenter([lat, lng]);
@@ -39,7 +33,7 @@ const Map = ({ markerLocations }) => {
         scrollWheelZoom={true}
       >
         <button className="getLocation" onClick={getGeoLocation}>
-          {IsLoadingGeoLoacation ? "Loading ..." : "Use Your Location"}
+          {isLoading ? "Loading ..." : "Use Your Location"}
         </button>
         <TileLayer
           attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
@@ -68,7 +62,8 @@ function ChangeCenter({ position }) {
 function DetectClick() {
   const navigate = useNavigate();
   useMapEvent({
-    click: (e) => navigate(`/bookmark?lat=${e.latlng.lat}&lng=${e.latlng.lng}`),
+    click: (e) =>
+      navigate(`/bookmark/add?lat=${e.latlng.lat}&lng=${e.latlng.lng}`),
   });
   return null;
 }
