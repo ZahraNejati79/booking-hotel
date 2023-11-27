@@ -44,7 +44,7 @@ const AddNewBookmark = () => {
     fetchLocationData();
   }, [lat, lng]);
 
-  const submitHandle = (e) => {
+  const submitHandle = async (e) => {
     e.preventDefault();
     const newBookmark = {
       cityName,
@@ -54,7 +54,7 @@ const AddNewBookmark = () => {
       longitude: lng,
       host_location: cityName + " " + country,
     };
-    createNewBookmark(newBookmark);
+    await createNewBookmark(newBookmark);
     navigate("/bookmark");
   };
 

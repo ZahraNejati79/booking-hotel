@@ -11,7 +11,6 @@ const SingleBookmark = () => {
 
   useEffect(() => {
     getCurrentBookmark(id);
-    console.log("id:", id);
   }, [id]);
 
   if (isLoadingCurrentBookmark || !currentBookmark) return <Loader />;

@@ -2,9 +2,14 @@ import ReactCountryFlag from "react-country-flag";
 import { useBookmarks } from "../context/BookmarkListProvider";
 import { Link } from "react-router-dom";
 import Loader from "../Loader/Loader";
-
+import { FaTrashCan } from "react-icons/fa6";
 const Bookmark = () => {
-  const { isLoading, bookmarks, currentBookmark } = useBookmarks();
+  const { isLoading, bookmarks, currentBookmark, deleteBookmark } =
+    useBookmarks();
+  const handleDelete = async (e, id) => {
+    e.preventDefault();
+    await deleteBookmark(id);
+  };
   if (isLoading) return <Loader />;
   return (
     <div>
@@ -20,9 +25,17 @@ const Bookmark = () => {
                 item.id === currentBookmark?.id && "current-bookmark"
               }`}
             >
-              <ReactCountryFlag svg countryCode={item.countryCode} />
-              &nbsp; <strong>{item.cityName}</strong> &nbsp;{" "}
-              <span>{item.country}</span>
+              <div>
+                <ReactCountryFlag svg countryCode={item.countryCode} />
+                &nbsp; <strong>{item.cityName}</strong> &nbsp;{" "}
+                <span>{item.country}</span>
+              </div>
+              <button
+                onClick={(e) => handleDelete(e, item.id)}
+                className="trash"
+              >
+                <FaTrashCan />
+              </button>
             </div>
           </Link>
         ))}
