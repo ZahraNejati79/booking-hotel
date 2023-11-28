@@ -7,12 +7,15 @@ import "react-date-range/dist/theme/default.css"; // theme css file
 import { DateRange } from "react-date-range";
 import { format } from "date-fns";
 import {
+  Link,
   NavLink,
   createSearchParams,
   useNavigate,
   useSearchParams,
 } from "react-router-dom";
 import { useAuth } from "../context/AuthProvider";
+import { FaRegBookmark } from "react-icons/fa6";
+
 const Header = () => {
   const [searchParams, setSearchParams] = useSearchParams();
   const [destination, setDestination] = useState(
@@ -112,6 +115,13 @@ const Header = () => {
             <HiSearch className="headerIcon" />
           </button>
         </div>
+        <div className="headerSearchItem">
+          <Link to="/bookmark">
+            <button className="headerSearchBtn">
+              <FaRegBookmark className="headerIcon" />
+            </button>
+          </Link>
+        </div>
       </div>
       <User />
     </div>
@@ -172,12 +182,14 @@ function OptionItem({ options, type, minLimit, handleOptions }) {
 
 function User() {
   const { isAuthenticated, logout } = useAuth();
-  const handleDelete = () => {
+  const navigate = useNavigate();
+  const handleLogout = () => {
     logout();
+    navigate("/");
   };
   if (isAuthenticated)
     return (
-      <button onClick={handleDelete} className="button">
+      <button onClick={handleLogout} className="button">
         Logout
       </button>
     );

@@ -4,9 +4,9 @@ import axios from "axios";
 const BookmarkListContext = createContext();
 const BASE_URL = "http://localhost:5000";
 const initialState = {
-  currentBookmark: null,
   bookmarks: [],
   isLoading: false,
+  currentBookmark: null,
   error: null,
 };
 
@@ -47,7 +47,7 @@ function BookmarkListProviter({ children }) {
   // const [isLoadingCurrentBookmark, setIsLoadingCurrentBookmark] =
   //   useState(false);
 
-  const [{ currentBookmark, bookmarks, isLoading }, dispatch] = useReducer(
+  const [{ bookmarks, isLoading, currentBookmark }, dispatch] = useReducer(
     bookmarkReducer,
     initialState
   );
@@ -59,19 +59,28 @@ function BookmarkListProviter({ children }) {
         const { data } = await axios.get(`${BASE_URL}/bookmarks`);
         dispatch({ type: "bookmarks/loaded", payload: data });
       } catch (error) {
-        dispatch({ type: "rejected", payload: error.message });
+        dispatch({
+          type: "rejected",
+          payload: "an Errror occurred in loading bookmarks",
+        });
       }
     }
     fetchBookmarkList();
   }, []);
 
   async function getCurrentBookmark(id) {
+    if (Number(id) === currentBookmark?.id) return;
+
     dispatch({ type: "loading" });
     try {
       const { data } = await axios.get(`${BASE_URL}/bookmarks/${id}`);
       dispatch({ type: "bookmark/loaded", payload: data });
     } catch (error) {
-      dispatch({ type: "rejected", payload: error.message });
+      toast.error(error.message);
+      dispatch({
+        type: "rejected",
+        payload: "an Error occurred in fetching single bookmark",
+      });
     }
   }
 
