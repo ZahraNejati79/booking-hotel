@@ -7,10 +7,12 @@ import "react-date-range/dist/theme/default.css"; // theme css file
 import { DateRange } from "react-date-range";
 import { format } from "date-fns";
 import {
+  NavLink,
   createSearchParams,
   useNavigate,
   useSearchParams,
 } from "react-router-dom";
+import { useAuth } from "../context/AuthProvider";
 const Header = () => {
   const [searchParams, setSearchParams] = useSearchParams();
   const [destination, setDestination] = useState(
@@ -111,6 +113,7 @@ const Header = () => {
           </button>
         </div>
       </div>
+      <User />
     </div>
   );
 };
@@ -165,4 +168,18 @@ function OptionItem({ options, type, minLimit, handleOptions }) {
       </div>
     </div>
   );
+}
+
+function User() {
+  const { isAuthenticated, logout } = useAuth();
+  const handleDelete = () => {
+    logout();
+  };
+  if (isAuthenticated)
+    return (
+      <button onClick={handleDelete} className="button">
+        Logout
+      </button>
+    );
+  return <NavLink to="/login">Login</NavLink>;
 }
