@@ -1,68 +1,97 @@
-import { createContext, useContext, useEffect, useState } from "react";
-import { useSearchParams } from "react-router-dom";
-import useFetch from "../../hooks/useFetch";
+import { createContext, useContext, useEffect, useReducer } from "react";
 import axios from "axios";
 
 const BookmarkListContext = createContext();
 const BASE_URL = "http://localhost:5000";
+const initialState = {
+  currentBookmark: null,
+  bookmarks: [],
+  isLoading: false,
+  error: null,
+};
+
+function bookmarkReducer(state, { type, payload }) {
+  switch (type) {
+    case "loading":
+      return { ...state, isLoading: true };
+    case "bookmarks/loaded":
+      return { ...state, isLoading: false, bookmarks: payload };
+    case "bookmark/loaded":
+      return { ...state, isLoading: false, currentBookmark: payload };
+    case "bookmark/created":
+      return {
+        ...state,
+        isLoading: false,
+        bookmarks: [...state.bookmarks, payload],
+      };
+    case "bookmark/deleted":
+      return {
+        ...state,
+        isLoading: false,
+        bookmarks: state.bookmarks.filter(
+          (bookmark) => bookmark.id !== Number(payload)
+        ),
+      };
+    case "rejected":
+      return { ...state, isLoading: false, error: payload };
+    default:
+      throw new Error("Unknown action");
+  }
+}
 
 function BookmarkListProviter({ children }) {
-  const [currentBookmark, setCurrentBookmark] = useState(null);
-  const [isLoading, setIsLoading] = useState(false);
-  const [bookmarks, setBookmarks] = useState([]);
-  const [error, setError] = useState(null);
-  const [isLoadingCurrentBookmark, setIsLoadingCurrentBookmark] =
-    useState(false);
+  // const [currentBookmark, setCurrentBookmark] = useState(null);
+  // const [isLoading, setIsLoading] = useState(false);
+  // const [bookmarks, setBookmarks] = useState([]);
+  // const [error, setError] = useState(null);
+  // const [isLoadingCurrentBookmark, setIsLoadingCurrentBookmark] =
+  //   useState(false);
+
+  const [{ currentBookmark, bookmarks, isLoading }, dispatch] = useReducer(
+    bookmarkReducer,
+    initialState
+  );
 
   useEffect(() => {
     async function fetchBookmarkList() {
-      setIsLoading(true);
+      dispatch({ type: "loading" });
       try {
         const { data } = await axios.get(`${BASE_URL}/bookmarks`);
-        setBookmarks(data);
+        dispatch({ type: "bookmarks/loaded", payload: data });
       } catch (error) {
-        setError(error.message);
-      } finally {
-        setIsLoading(false);
+        dispatch({ type: "rejected", payload: error.message });
       }
     }
-
     fetchBookmarkList();
   }, []);
 
   async function getCurrentBookmark(id) {
-    setIsLoadingCurrentBookmark(true);
+    dispatch({ type: "loading" });
     try {
       const { data } = await axios.get(`${BASE_URL}/bookmarks/${id}`);
-      setCurrentBookmark(data);
+      dispatch({ type: "bookmark/loaded", payload: data });
     } catch (error) {
-      setError(error.message);
-    } finally {
-      setIsLoadingCurrentBookmark(false);
+      dispatch({ type: "rejected", payload: error.message });
     }
   }
 
   async function postBookmark(newBookmark) {
-    setIsLoading(true);
+    dispatch({ type: "loading" });
     try {
       const { data } = await axios.post(`${BASE_URL}/bookmarks`, newBookmark);
-      setBookmarks((prev) => [...prev, data]);
+      dispatch({ type: "bookmark/created", payload: data });
     } catch (error) {
-      setError(error.message);
-    } finally {
-      setIsLoading(false);
+      dispatch({ type: "rejected", payload: error.message });
     }
   }
 
   async function deleteBookmark(id) {
-    setIsLoading(true);
+    dispatch({ type: "loading" });
     try {
       await axios.delete(`${BASE_URL}/bookmarks/${id}`);
-      setBookmarks((prev) => prev.filter((item) => item.id !== id));
+      dispatch({ type: "bookmark/deleted", payload: id });
     } catch (error) {
-      setError(error.message);
-    } finally {
-      setIsLoading(false);
+      dispatch({ type: "rejected", payload: error.message });
     }
   }
 
@@ -74,7 +103,6 @@ function BookmarkListProviter({ children }) {
         isLoading,
         getCurrentBookmark,
         postBookmark,
-        isLoadingCurrentBookmark,
         deleteBookmark,
       }}
     >

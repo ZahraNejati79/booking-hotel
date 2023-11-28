@@ -10,6 +10,7 @@ const Bookmark = () => {
     e.preventDefault();
     await deleteBookmark(id);
   };
+
   if (isLoading) return <Loader />;
   return (
     <div>
